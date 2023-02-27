@@ -1,0 +1,11 @@
+CREATE OR REPLACE FUNCTION visit_num(
+last_name varchar default '',
+doctor_id int default 0
+)
+RETURNS integer AS $$
+SELECT COALESCE(COUNT(*), 0)
+FROM H_VISIT
+JOIN H_PATIENT HP on HP.N_CARD = H_VISIT.ID_PATIENT
+JOIN H_DOCTOR HD on HD.ID_DOCTOR = H_VISIT.ID_DOCTOR
+WHERE H_VISIT.ID_DOCTOR = doctor_id OR UPPER(HP.SURNAME) = UPPER(last_name);
+$$ LANGUAGE SQL;
